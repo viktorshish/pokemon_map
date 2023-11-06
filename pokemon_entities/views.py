@@ -45,7 +45,7 @@ def show_all_pokemons(request):
     pokemons_on_page = []
     for pokemon in pokemons:
         if pokemon.image:
-            image_url = request.build_absolute_uri(pokemon.image.url)
+            image_url = pokemon.image.url
         else:
             image_url = None
 
