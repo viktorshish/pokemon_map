@@ -29,9 +29,12 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
 
 
 def show_all_pokemons(request):
-    moscow_time = timezone.localtime(timezone=timezone.pytz.timezone('Europe/Moscow'))
+    moscow_time = timezone.localtime(
+        timezone=timezone.pytz.timezone('Europe/Moscow')
+        )
     pokemon_entitys = PokemonEntity.objects.filter(
-        appeared_at__lte=moscow_time, disappeared_at__gt=moscow_time
+        appeared_at__lte=moscow_time,
+        disappeared_at__gt=moscow_time
     )
     pokemons = Pokemon.objects.all()
 
