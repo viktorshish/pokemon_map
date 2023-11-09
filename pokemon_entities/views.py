@@ -56,7 +56,7 @@ def show_all_pokemons(request):
 
         pokemons_on_page.append({
                 'pokemon_id': pokemon.id,
-                'title_ru': pokemon.title,
+                'title_ru': pokemon.title_ru,
                 'img_url': image_url,
             })
 
@@ -75,8 +75,10 @@ def show_pokemon(request, pokemon_id):
         image_url = None
 
     pokemon_on_page = {
-        'title_ru': pokemon.title,
+        'title_ru': pokemon.title_ru,
+        'title_en': pokemon.title_ru,
         'img_url': image_url,
+        'description': pokemon.description
     }
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
