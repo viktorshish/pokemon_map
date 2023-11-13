@@ -82,6 +82,15 @@ def show_pokemon(request, pokemon_id):
         }
         pokemon_on_page['previous_evolution'] = previous_evolution_pokemon
 
+    next_evolution_pokemon = pokemon.next_evolutions.first()
+    if next_evolution_pokemon:
+        next_evolution_pokemons = {
+            'pokemon_id': next_evolution_pokemon.id,
+            'img_url': next_evolution_pokemon.image.url if next_evolution_pokemon.image else None, 
+            'title_ru': next_evolution_pokemon.title_ru,
+        }
+        pokemon_on_page['next_evolution'] = next_evolution_pokemons
+
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     moscow_time = timezone.localtime(
