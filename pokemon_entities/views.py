@@ -35,7 +35,7 @@ def show_all_pokemons(request):
     moscow_time = timezone.localtime(
         timezone=timezone.pytz.timezone('Europe/Moscow')
         )
-    pokemon_entitys = PokemonEntity.objects.filter(
+    pokemon_entities = PokemonEntity.objects.filter(
         appeared_at__lte=moscow_time,
         disappeared_at__gt=moscow_time
     )
@@ -49,7 +49,7 @@ def show_all_pokemons(request):
                 'img_url': pokemon.image.url if pokemon.image else None,
             })
 
-        for pokemon_entity in pokemon_entitys:
+        for pokemon_entity in pokemon_entities:
             image_url = pokemon_entity.pokemon.image.url if pokemon_entity.pokemon.image else None
 
             add_pokemon(
@@ -97,11 +97,11 @@ def show_pokemon(request, pokemon_id):
     moscow_time = timezone.localtime(
         timezone=timezone.pytz.timezone('Europe/Moscow')
         )
-    pokemon_entitys = pokemon.pokemon_entity.filter(
+    pokemon_entities = pokemon.pokemon_entity.filter(
         appeared_at__lte=moscow_time,
         disappeared_at__gt=moscow_time
     )
-    for pokemon_entity in pokemon_entitys:
+    for pokemon_entity in pokemon_entities:
         image_url = pokemon_entity.pokemon.image.url if pokemon_entity.pokemon.image else None
         add_pokemon(
                 folium_map, pokemon_entity.lat,
