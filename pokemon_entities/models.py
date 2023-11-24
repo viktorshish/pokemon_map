@@ -8,13 +8,11 @@ class Pokemon(models.Model):
     )
     title_en = models.CharField(
         max_length=200,
-        null=True,
         blank=True,
-        verbose_name='Название на английском',
+        verbose_name='Название на английском'
     )
     title_jp = models.CharField(
         max_length=200,
-        null=True,
         blank=True,
         verbose_name='Название на японском',
     )
@@ -24,13 +22,13 @@ class Pokemon(models.Model):
         blank=True,
         verbose_name='Изображение'
     )
-    description = models.TextField(null=True, blank=True, verbose_name='Описание')
+    description = models.TextField(verbose_name='Описание', blank=True)
     previous_evolution = models.ForeignKey(
         'self',
-        related_name='next_evolutions',
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
+        related_name='next_evolutions',
         verbose_name='Из кого эволюционирует',
         )
 
@@ -47,21 +45,17 @@ class PokemonEntity(models.Model):
         )
     lat = models.FloatField(verbose_name='Широта')
     lon = models.FloatField(verbose_name='Долгота')
-    appeared_at = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name='Время появления'
-    )
-    disappeared_at = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name='Время исчезновения'
-    )
-    level = models.IntegerField(verbose_name='Уровень')
+    appeared_at = models.DateTimeField(verbose_name='Время появления')
+    disappeared_at = models.DateTimeField(verbose_name='Время исчезновения')
+    level = models.IntegerField(null=True, blank=True, verbose_name='Уровень')
     health = models.IntegerField(null=True, blank=True, verbose_name='Здоровье')
     strength = models.IntegerField(null=True, blank=True, verbose_name='Сила')
     defence = models.IntegerField(null=True, blank=True, verbose_name='Защита')
-    stamina = models.IntegerField(null=True, blank=True, verbose_name='Выносливость')
+    stamina = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Выносливость'
+    )
 
     def __str__(self):
-        return f'{self.pokemon} {self.lat} {self.lon} {self.level}'
+        return f'{self.pokemon} {self.lat} {self.lon}'
