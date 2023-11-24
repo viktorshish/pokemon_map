@@ -1,6 +1,5 @@
 import folium
 
-from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.utils import timezone
 
