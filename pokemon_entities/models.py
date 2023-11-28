@@ -33,7 +33,7 @@ class Pokemon(models.Model):
         )
 
     def __str__(self):
-        return f'{self.title_ru}'
+        return self.title_ru
 
 
 class PokemonEntity(models.Model):
@@ -58,4 +58,4 @@ class PokemonEntity(models.Model):
     )
 
     def __str__(self):
-        return f'{self.pokemon} {self.lat} {self.lon}'
+        return self.pokemon, self.lat, self.lon
