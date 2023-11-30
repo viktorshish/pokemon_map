@@ -30,7 +30,7 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
 
 
 def check_image(pokemon):
-    image_url = pokemon.image.url if pokemon.image else None
+    image_url = pokemon.image.url if pokemon.image else DEFAULT_IMAGE_URL
     return image_url
 
 
