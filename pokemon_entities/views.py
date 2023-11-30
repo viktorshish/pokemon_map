@@ -29,6 +29,11 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
         ).add_to(folium_map)
 
 
+def check_image(pokemon):
+    image_url = pokemon.image.url if pokemon.image else None
+    return image_url
+
+
 def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
 
@@ -43,19 +48,17 @@ def show_all_pokemons(request):
 
     pokemons_on_page = []
     for pokemon in pokemons:
-        image_url = pokemon.image.url if pokemon.image else None
         pokemons_on_page.append({
                 'pokemon_id': pokemon.id,
                 'title_ru': pokemon.title_ru,
-                'img_url': image_url,
+                'img_url': check_image(pokemon),
             })
 
     for pokemon_entity in pokemon_entities:
-        entity_image_url = pokemon_entity.pokemon.image.url if pokemon_entity.pokemon.image else None
         add_pokemon(
             folium_map, pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(entity_image_url),
+            request.build_absolute_uri(check_image(pokemon_entity.pokemon)),
         )
 
     return render(request, 'mainpage.html', context={
@@ -73,28 +76,28 @@ def show_pokemon(request, pokemon_id):
     else:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
-    image_url = requested_pokemon.image.url if requested_pokemon.image else None
     pokemon_on_page = {
         'title_ru': requested_pokemon.title_ru,
         'title_en': requested_pokemon.title_en,
         'title_jp': requested_pokemon.title_jp,
-        'img_url': image_url,
+        'img_url': check_image(requested_pokemon),
         'description': requested_pokemon.description,
     }
 
     if requested_pokemon.previous_evolution:
         previous_evolution_pokemon = {
             'pokemon_id': requested_pokemon.previous_evolution.id,
-            'img_url': requested_pokemon.previous_evolution.image.url if requested_pokemon.previous_evolution.image else None,
+            'img_url': check_image(requested_pokemon.previous_evolution),
             'title_ru': requested_pokemon.previous_evolution.title_ru,
         }
         pokemon_on_page['previous_evolution'] = previous_evolution_pokemon
 
     next_evolution_pokemon = requested_pokemon.next_evolutions.first()
+
     if next_evolution_pokemon:
         next_evolution_pokemons = {
             'pokemon_id': next_evolution_pokemon.id,
-            'img_url': next_evolution_pokemon.image.url if next_evolution_pokemon.image else None, 
+            'img_url': check_image(next_evolution_pokemon),
             'title_ru': next_evolution_pokemon.title_ru,
         }
         pokemon_on_page['next_evolution'] = next_evolution_pokemons
@@ -110,11 +113,10 @@ def show_pokemon(request, pokemon_id):
         disappeared_at__gt=moscow_time
     )
     for pokemon_entity in pokemon_entities:
-        image_url = pokemon_entity.pokemon.image.url if pokemon_entity.pokemon.image else None
         add_pokemon(
                 folium_map, pokemon_entity.lat,
                 pokemon_entity.lon,
-                request.build_absolute_uri(image_url),
+                request.build_absolute_uri(check_image(pokemon_entity.pokemon)),
             )
 
     return render(request, 'pokemon.html', context={
